@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+/* eslint-disable import/first */
+// import "./chartSetup";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,19 +21,103 @@ import {
 } from "./amadeusClient"; // adjust path if needed
 import SmartBudgetSplit from "./SmartBudgetSplit";
 import { Pie, Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
+// import {
+//   Chart as ChartJS,
+//   ArcElement,
+//   Tooltip,
+//   Legend,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   PointElement,
+//   LineElement,
+// } from "chart.js";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 import { useNavigate } from "react-router-dom";
+
+
+
+
+// export default App;
+
+// ✅ ALL imports first
+// import { useEffect, useRef } from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+  Chart
+} from "chart.js";
+
+// ✅ registration immediately after imports
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend
+);
+
+// ✅ component code starts AFTER imports + registration
+function ChartCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const chartRef = useRef<Chart | null>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    chartRef.current = new Chart(canvasRef.current, {
+      type: "bar",
+      data: {
+        labels: ["Jan", "Feb", "Mar"],
+        datasets: [
+          { label: "Sales", data: [10, 20, 30] }
+        ]
+      }
+    });
+
+    return () => {
+      chartRef.current?.destroy();
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} />;
+}
+
+// export default ChartCanvas;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 import BookingPage from "./BookingPage";
